@@ -1,4 +1,4 @@
-= JSON Threat Protection Policy
+= JSON threat protection policy
 
 ifdef::env-github[]
 image:https://ci.gravitee.io/buildStatus/icon?job=gravitee-io/gravitee-policy-json-threat-protection/master["Build status", link="https://ci.gravitee.io/job/gravitee-io/job/gravitee-policy-json-threat-protection/"]
@@ -18,8 +18,8 @@ endif::[]
 
 == Description
 
-The JSON Threat Protection Policy allows validating json request body by applying limits on various JSON structures (arrays, field name, string values, ...).
-When an invalid request is detected (meaning maximum limit is reached), the request will be considered a threat and rejected with a 400 BAD REQUEST.
+You can use the `json-threat-protection` policy to validate a JSON request body by specifying limits for various JSON structures (such as arrays, field names and string values).
+When an invalid request is detected (meaning the limit is reached), the request will be considered a threat and rejected with a `400 BAD REQUEST`.
 
 == Configuration
 
@@ -28,62 +28,59 @@ When an invalid request is detected (meaning maximum limit is reached), the requ
 
 .^|maxEntries
 ^.^|
-|Maximum number of entries allowed in an json object. Example: ```{ "a":{ "b":1, "c":2, "d":3 }}```, ```a``` has 3 entries
+|Maximum number of entries allowed for a JSON object. Example: In ```{ "a":{ "b":1, "c":2, "d":3 }}```, ```a``` has 3 entries
 ^.^|integer (null or -1 to specify no limit)
 |100
 
 .^|maxArraySize
 ^.^|
-|Maximum number of elements allowed in an array.
+|Maximum number of elements allowed in an array
 ^.^|integer (null or -1 to specify no limit)
 |100
 
 .^|maxDepth
 ^.^|
-|Maximum depth of json structure. Example: ```{ "a":{ "b":{ "c":true }}}```, json has a depth of 3.
+|Maximum depth of JSON structure. Example: ```{ "a":{ "b":{ "c":true }}}``` has a depth of 3.
 ^.^|integer (null or -1 to specify no limit)
 |100
 
 .^|maxNameLength
 ^.^|
-|Maximum string length allowed for a json property name.
+|Maximum string length allowed for a JSON property name
 ^.^|integer (null or -1 to specify no limit)
 |100
 
 .^|maxValueLength
 ^.^|
-|Maximum string length allowed for a json property value.
+|Maximum string length allowed for a JSON property value
 ^.^|integer (null or -1 to specify no limit)
 |500
 
 |===
 
+== Errors
 
-== Http Status Code
+=== HTTP status code
 
 |===
 |Code |Message
 
 .^| ```400```
 
-a| In case of:
+a| Received in the following cases:
 
-* Invalid json structure
+* Invalid JSON structure
 * Maximum depth exceeded
-* Maximum json entries exceeded
-* Maximum json array size exceeded
-* Maximum json field name length exceeded
-* Maximum json field value length exceeded
+* Maximum JSON entries exceeded
+* Maximum JSON array size exceeded
+* Maximum JSON field name length exceeded
+* Maximum JSON field value length exceeded
 
 |===
 
-== Errors
+You can override the default response provided by the policy with the response templates feature. These templates must be defined at API level (see the API Console *Response Templates* option in the API *Proxy* menu).
 
-If you're looking to override the default response provided by the policy, you can do it
-thanks to the response templates feature. These templates must be define at the API level (see `Response Templates`
-from the `Proxy` menu).
-
-Here are the error keys send by this policy:
+The error keys sent by this policy are as follows:
 
 [cols="2*", options="header"]
 |===
