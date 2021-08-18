@@ -29,31 +29,31 @@ When an invalid request is detected (meaning the limit is reached), the request 
 .^|maxEntries
 ^.^|
 |Maximum number of entries allowed for a JSON object. Example: In ```{ "a":{ "b":1, "c":2, "d":3 }}```, ```a``` has 3 entries
-^.^|integer (null or -1 to specify no limit)
+^.^|integer (-1 to specify no limit)
 |100
 
 .^|maxArraySize
 ^.^|
 |Maximum number of elements allowed in an array
-^.^|integer (null or -1 to specify no limit)
+^.^|integer (-1 to specify no limit)
 |100
 
 .^|maxDepth
 ^.^|
 |Maximum depth of JSON structure. Example: ```{ "a":{ "b":{ "c":true }}}``` has a depth of 3.
-^.^|integer (null or -1 to specify no limit)
+^.^|integer (-1 to specify no limit)
 |100
 
 .^|maxNameLength
 ^.^|
 |Maximum string length allowed for a JSON property name
-^.^|integer (null or -1 to specify no limit)
+^.^|integer (-1 to specify no limit)
 |100
 
 .^|maxValueLength
 ^.^|
 |Maximum string length allowed for a JSON property value
-^.^|integer (null or -1 to specify no limit)
+^.^|integer (-1 to specify no limit)
 |500
 
 |===
