@@ -15,11 +15,12 @@
  */
 package io.gravitee.policy.threatprotection.json;
 
-import io.gravitee.common.http.HttpHeaders;
 import io.gravitee.common.http.MediaType;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
 import io.gravitee.gateway.api.buffer.Buffer;
+import io.gravitee.gateway.api.http.HttpHeaderNames;
+import io.gravitee.gateway.api.http.HttpHeaders;
 import io.gravitee.gateway.api.stream.ReadWriteStream;
 import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.api.PolicyResult;
@@ -65,8 +66,8 @@ public class JsonThreatProtectionPolicyTest {
 
         cut = new JsonThreatProtectionPolicy(configuration);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+        HttpHeaders httpHeaders = HttpHeaders.create()
+                        .set(HttpHeaderNames.CONTENT_TYPE, MediaType.APPLICATION_JSON);
         when(request.headers()).thenReturn(httpHeaders);
     }
 
@@ -74,7 +75,7 @@ public class JsonThreatProtectionPolicyTest {
     public void shouldAcceptAllWhenContentTypeIsNotJson() {
 
         Mockito.reset(request);
-        when(request.headers()).thenReturn(new HttpHeaders());
+        when(request.headers()).thenReturn(HttpHeaders.create());
         ReadWriteStream<?> readWriteStream = cut.onRequestContent(request, policyChain);
 
         assertNull(readWriteStream);
