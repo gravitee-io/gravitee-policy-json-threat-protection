@@ -15,6 +15,9 @@
  */
 package io.gravitee.policy.threatprotection.json;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 import io.gravitee.common.http.MediaType;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
@@ -30,9 +33,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * @author Jeoffrey HAEYAERT (jeoffrey.haeyaert at graviteesource.com)
@@ -56,7 +56,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Before
     public void before() {
-
         configuration = new JsonThreatProtectionPolicyConfiguration();
         configuration.setMaxArraySize(100);
         configuration.setMaxDepth(1000);
@@ -66,14 +65,12 @@ public class JsonThreatProtectionPolicyTest {
 
         cut = new JsonThreatProtectionPolicy(configuration);
 
-        HttpHeaders httpHeaders = HttpHeaders.create()
-                        .set(HttpHeaderNames.CONTENT_TYPE, MediaType.APPLICATION_JSON);
+        HttpHeaders httpHeaders = HttpHeaders.create().set(HttpHeaderNames.CONTENT_TYPE, MediaType.APPLICATION_JSON);
         when(request.headers()).thenReturn(httpHeaders);
     }
 
     @Test
     public void shouldAcceptAllWhenContentTypeIsNotJson() {
-
         Mockito.reset(request);
         when(request.headers()).thenReturn(HttpHeaders.create());
         ReadWriteStream<?> readWriteStream = cut.onRequestContent(request, policyChain);
@@ -83,7 +80,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldAcceptValidJson() {
-
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
         assertNotNull(readWriteStream);
@@ -96,7 +92,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectInvalidJson() {
-
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
         assertNotNull(readWriteStream);
@@ -109,7 +104,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxNameLengthExceeded() {
-
         configuration.setMaxNameLength(4);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -123,7 +117,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxValueLengthExceeded() {
-
         configuration.setMaxValueLength(8);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -137,7 +130,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxObjectEntriesExceeded() {
-
         configuration.setMaxEntries(2);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -151,7 +143,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxArraySizeExceeded() {
-
         configuration.setMaxArraySize(2);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -165,7 +156,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxDepthExceeded() {
-
         configuration.setMaxDepth(1);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
