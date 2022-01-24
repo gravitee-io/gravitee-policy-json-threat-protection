@@ -37,13 +37,13 @@ import java.util.Collections;
  */
 public class JsonThreatProtectionPolicy {
 
-    private static final String BAD_REQUEST = "Bad Request";
-    private static final String JSON_THREAT_DETECTED_KEY = "JSON_THREAT_DETECTED";
-    private static final String JSON_THREAT_MAX_DEPTH_KEY = "JSON_THREAT_MAX_DEPTH";
-    private static final String JSON_THREAT_MAX_ENTRIES_KEY = "JSON_THREAT_MAX_ENTRIES";
-    private static final String JSON_THREAT_MAX_NAME_LENGTH_KEY = "JSON_THREAT_MAX_NAME_LENGTH";
-    private static final String JSON_THREAT_MAX_VALUE_LENGTH_KEY = "JSON_THREAT_MAX_VALUE_LENGTH";
-    private static final String JSON_MAX_ARRAY_SIZE_KEY = "JSON_MAX_ARRAY_SIZE";
+    public static final String BAD_REQUEST = "Bad Request";
+    public static final String JSON_THREAT_DETECTED_KEY = "JSON_THREAT_DETECTED";
+    public static final String JSON_THREAT_MAX_DEPTH_KEY = "JSON_THREAT_MAX_DEPTH";
+    public static final String JSON_THREAT_MAX_ENTRIES_KEY = "JSON_THREAT_MAX_ENTRIES";
+    public static final String JSON_THREAT_MAX_NAME_LENGTH_KEY = "JSON_THREAT_MAX_NAME_LENGTH";
+    public static final String JSON_THREAT_MAX_VALUE_LENGTH_KEY = "JSON_THREAT_MAX_VALUE_LENGTH";
+    public static final String JSON_MAX_ARRAY_SIZE_KEY = "JSON_MAX_ARRAY_SIZE";
 
     private static final JsonFactory jsonFactory = new JsonFactory();
 
@@ -89,30 +89,51 @@ public class JsonThreatProtectionPolicy {
     public void validateJson(String json) throws JsonException {
         try {
             JsonParser parser = jsonFactory.createParser(json);
-            int depth = 0, fieldCount = 0;
+            JsonDepthCounter depthCounter = new JsonDepthCounter();
 
             JsonToken token;
             while ((token = parser.nextToken()) != null) {
-                switch (token) {
-                    case START_OBJECT:
-                        depth++;
-                        validateDepth(depth);
-                        break;
-                    case END_OBJECT:
-                        depth--;
-                        break;
-                    case START_ARRAY:
-                        validateArray(parser);
-                        break;
-                    case FIELD_NAME:
-                        validateFieldCount(++fieldCount);
-                        validateName(parser.getCurrentName());
-                        break;
-                    case VALUE_STRING:
-                        validateValue(parser.getText());
-                        break;
+                validate(depthCounter, token, parser);
+            }
+        } catch (IOException e) {
+            throw new JsonException(JSON_THREAT_DETECTED_KEY, "Invalid json data");
+        }
+    }
+
+    public void validate(JsonDepthCounter depthCounter, JsonToken token, JsonParser parser) throws IOException, JsonException {
+        switch (token) {
+            case START_OBJECT:
+                validateObject(depthCounter, parser);
+                break;
+            case START_ARRAY:
+                validateArray(depthCounter, parser);
+                break;
+            case FIELD_NAME:
+                validateName(parser.getCurrentName());
+                break;
+            case VALUE_STRING:
+                validateValue(parser.getText());
+                break;
+        }
+    }
+
+    public void validateObject(JsonDepthCounter depthCounter, JsonParser parser) throws JsonException {
+        JsonToken token;
+
+        try {
+            int fieldCount = 0;
+            depthCounter.increment();
+            validateDepth(depthCounter.getDepth());
+
+            while ((token = parser.nextToken()) != JsonToken.END_OBJECT) {
+                validate(depthCounter, token, parser);
+
+                if (token == JsonToken.FIELD_NAME) {
+                    validateFieldCount(++fieldCount);
                 }
             }
+
+            depthCounter.decrement();
         } catch (IOException e) {
             throw new JsonException(JSON_THREAT_DETECTED_KEY, "Invalid json data");
         }
@@ -155,14 +176,16 @@ public class JsonThreatProtectionPolicy {
         }
     }
 
-    private void validateArray(JsonParser parser) throws JsonException {
+    private void validateArray(JsonDepthCounter depthCounter, JsonParser parser) throws JsonException {
         JsonToken token;
         try {
+            depthCounter.increment();
+            validateDepth(depthCounter.getDepth());
+
             int entryCount = 0;
             while ((token = parser.nextToken()) != JsonToken.END_ARRAY) {
-                if (token == JsonToken.VALUE_STRING) {
-                    validateValue(parser.getText());
-                }
+                validate(depthCounter, token, parser);
+
                 entryCount += 1;
                 if (configuration.hasMaxArraySize() && entryCount > configuration.getMaxArraySize()) {
                     throw new JsonException(
@@ -171,6 +194,8 @@ public class JsonThreatProtectionPolicy {
                     );
                 }
             }
+
+            depthCounter.decrement();
         } catch (IOException e) {
             throw new JsonException(JSON_THREAT_DETECTED_KEY, "Invalid json array.", e);
         }
