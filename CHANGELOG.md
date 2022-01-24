@@ -1,3 +1,11 @@
+## [1.3.1](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.3.0...1.3.1) (2022-01-24)
+
+
+### Bug Fixes
+
+* **array-size:** properly check array size ([fab14ba](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/fab14ba776cf4077d38afdfaeaa53f51dcf6ee19)), closes [gravitee-io/issues#6050](https://github.com/gravitee-io/issues/issues/6050)
+* threat protection policies: unable to adjust default values ([ef1f62e](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/ef1f62e65ccbeca3ccd6ed9a9489afbaca1dedb6)), closes [gravitee-io/issues#5982](https://github.com/gravitee-io/issues/issues/5982)
+
 # [1.3.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.2.0...1.3.0) (2022-01-24)
 
 
