@@ -34,7 +34,6 @@ public class JsonException extends Exception {
     }
 
     public String getKey() {
-
         return key;
     }
 }
