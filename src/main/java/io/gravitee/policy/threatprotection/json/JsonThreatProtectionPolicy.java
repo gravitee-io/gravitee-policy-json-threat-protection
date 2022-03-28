@@ -23,8 +23,9 @@ import io.gravitee.common.http.HttpStatusCode;
 import io.gravitee.common.http.MediaType;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.buffer.Buffer;
-import io.gravitee.gateway.api.http.stream.TransformableRequestStreamBuilder;
+import io.gravitee.gateway.api.stream.BufferedReadWriteStream;
 import io.gravitee.gateway.api.stream.ReadWriteStream;
+import io.gravitee.gateway.api.stream.SimpleReadWriteStream;
 import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.api.PolicyResult;
 import io.gravitee.policy.api.annotations.OnRequestContent;
@@ -57,12 +58,24 @@ public class JsonThreatProtectionPolicy {
     public ReadWriteStream<Buffer> onRequestContent(Request request, PolicyChain policyChain) {
         if (request.headers().getOrDefault(HttpHeaders.CONTENT_TYPE, Collections.emptyList()).contains(MediaType.APPLICATION_JSON)) {
             // The policy is only applicable to json content type.
-            return TransformableRequestStreamBuilder
-                .on(request)
-                .chain(policyChain)
-                .transform(buffer -> {
+            return new BufferedReadWriteStream() {
+                final Buffer buffer = Buffer.buffer();
+
+                @Override
+                public SimpleReadWriteStream<Buffer> write(Buffer content) {
+                    buffer.appendBuffer(content);
+                    return this;
+                }
+
+                @Override
+                public void end() {
                     try {
                         validateJson(buffer.toString());
+
+                        if (buffer.length() > 0) {
+                            super.write(buffer);
+                        }
+                        super.end();
                     } catch (JsonException e) {
                         policyChain.streamFailWith(
                             PolicyResult.failure(e.getKey(), HttpStatusCode.BAD_REQUEST_400, BAD_REQUEST, MediaType.TEXT_PLAIN)
@@ -77,10 +90,8 @@ public class JsonThreatProtectionPolicy {
                             )
                         );
                     }
-
-                    return buffer;
-                })
-                .build();
+                }
+            };
         }
 
         return null;

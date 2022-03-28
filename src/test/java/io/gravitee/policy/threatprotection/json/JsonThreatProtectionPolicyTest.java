@@ -16,7 +16,8 @@
 package io.gravitee.policy.threatprotection.json;
 
 import static io.gravitee.policy.threatprotection.json.JsonThreatProtectionPolicy.*;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 import io.gravitee.common.http.HttpHeaders;
@@ -24,9 +25,12 @@ import io.gravitee.common.http.MediaType;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
 import io.gravitee.gateway.api.buffer.Buffer;
+import io.gravitee.gateway.api.stream.BufferedReadWriteStream;
 import io.gravitee.gateway.api.stream.ReadWriteStream;
+import io.gravitee.gateway.api.stream.SimpleReadWriteStream;
 import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.api.PolicyResult;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -152,14 +156,14 @@ public class JsonThreatProtectionPolicyTest {
         when(request.headers()).thenReturn(new HttpHeaders());
         ReadWriteStream<?> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNull(readWriteStream);
+        assertThat(readWriteStream).isNull();
     }
 
     @Test
     public void shouldAcceptValidJson() {
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
 
         readWriteStream.write(Buffer.buffer("{ \"valid\": true, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": true } }"));
         readWriteStream.end();
@@ -171,10 +175,14 @@ public class JsonThreatProtectionPolicyTest {
     public void shouldRejectInvalidJson() {
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(Buffer.buffer("Invalid"));
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
 
         verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
         assertEquals(JSON_THREAT_DETECTED_KEY, resultCaptor.getValue().key());
@@ -185,10 +193,14 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxNameLength(4);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(Buffer.buffer("{ \"valid\": true, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": \"123456789\" } }"));
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
 
         verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
         assertEquals(JSON_THREAT_MAX_NAME_LENGTH_KEY, resultCaptor.getValue().key());
@@ -199,10 +211,13 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxValueLength(8);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": \"123456789\" } }"));
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
 
         verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
         assertEquals(JSON_THREAT_MAX_VALUE_LENGTH_KEY, resultCaptor.getValue().key());
@@ -213,10 +228,13 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxEntries(2);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": \"123456789\" } }"));
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
 
         verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
         assertEquals(JSON_THREAT_MAX_ENTRIES_KEY, resultCaptor.getValue().key());
@@ -227,10 +245,13 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxArraySize(2);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": \"123456789\" } }"));
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
 
         verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
         assertEquals(JSON_MAX_ARRAY_SIZE_KEY, resultCaptor.getValue().key());
@@ -241,10 +262,13 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxArraySize(2);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(Buffer.buffer(JSON));
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
 
         verify(policyChain, times(1)).streamFailWith(any(PolicyResult.class));
     }
@@ -254,10 +278,13 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxArraySize(4);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(Buffer.buffer("{\"a\":[\"1\",\"2\",\"3\",[\"1\",\"2\",\"3\",[\"1\",\"2\",\"3\",\"4\",\"5\"]]]}"));
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
 
         verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
         assertEquals(JSON_MAX_ARRAY_SIZE_KEY, resultCaptor.getValue().key());
@@ -268,10 +295,13 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxArraySize(4);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(Buffer.buffer("{\"a\":[\"1\",\"2\",\"3\",[\"1\",\"2\",\"3\",[\"1\",\"2\",\"3\",\"4\"]]]}"));
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isTrue();
 
         verifyNoInteractions(policyChain);
     }
@@ -281,10 +311,13 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxDepth(1);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": \"123456789\" } }"));
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
 
         verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
         assertEquals(JSON_THREAT_MAX_DEPTH_KEY, resultCaptor.getValue().key());
@@ -295,12 +328,15 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxDepth(6);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(
             Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": [ [ [ [ [ \"123456789\" ] ] ] ] ] } }")
         );
         readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
 
         verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
         assertEquals(JSON_THREAT_MAX_DEPTH_KEY, resultCaptor.getValue().key());
@@ -311,13 +347,31 @@ public class JsonThreatProtectionPolicyTest {
         configuration.setMaxDepth(7);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
-        assertNotNull(readWriteStream);
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
         readWriteStream.write(
             Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": [ [ [ [ [ \"123456789\" ] ] ] ] ] } }")
         );
         readWriteStream.end();
 
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isTrue();
+
         verifyNoInteractions(policyChain);
+    }
+
+    /**
+     * Replace the endHandler of the resulting ReadWriteStream of the policy execution.
+     * This endHandler will set an {@link AtomicBoolean} to {@code true} if its called.
+     * It will allow us to verify if super.end() has been called on {@link BufferedReadWriteStream#end()}
+     * @param readWriteStream: the {@link ReadWriteStream} to modify
+     * @return an AtomicBoolean set to {@code true} if {@link SimpleReadWriteStream#end()}, else {@code false}
+     */
+    private AtomicBoolean spyEndHandler(ReadWriteStream readWriteStream) {
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = new AtomicBoolean(false);
+        readWriteStream.endHandler(__ -> {
+            hasCalledEndOnReadWriteStreamParentClass.set(true);
+        });
+        return hasCalledEndOnReadWriteStreamParentClass;
     }
 }
