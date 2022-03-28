@@ -15,6 +15,10 @@
  */
 package io.gravitee.policy.threatprotection.json;
 
+import static io.gravitee.policy.threatprotection.json.JsonThreatProtectionPolicy.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 import io.gravitee.common.http.HttpHeaders;
 import io.gravitee.common.http.MediaType;
 import io.gravitee.gateway.api.Request;
@@ -31,10 +35,6 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import static io.gravitee.policy.threatprotection.json.JsonThreatProtectionPolicy.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * @author Jeoffrey HAEYAERT (jeoffrey.haeyaert at graviteesource.com)
@@ -55,76 +55,76 @@ public class JsonThreatProtectionPolicyTest {
     @Captor
     private ArgumentCaptor<PolicyResult> resultCaptor;
 
-    private static final String JSON = "{\n" +
-            "    \"travel\": {\n" +
-            "        \"type\": \"TOURISM\",\n" +
-            "        \"language\": \"FR\",\n" +
-            "        \"isPolicyHolderTravelling\": true,\n" +
-            "        \"start\": \"2019-06-03\",\n" +
-            "        \"end\": \"2019-06-05\"\n" +
-            "    },\n" +
-            "    \"policyHolder\": {\n" +
-            "        \"civility\": \"xxxxxx\",\n" +
-            "        \"firstname\": \"xxxxxx\",\n" +
-            "        \"lastname\": \"xxxxxx\",\n" +
-            "        \"maidenname\": \"xxxxxx\",\n" +
-            "        \"id\": \"45465\",\n" +
-            "        \"phone\": \"0606060607\",\n" +
-            "        \"professionalPhone\": \"0101010101\",\n" +
-            "        \"email\": \"xxxxxxxxxxx\",\n" +
-            "        \"address\": {\n" +
-            "            \"street\": \"my street\",\n" +
-            "            \"zipcode\": \"xxxxxx\",\n" +
-            "            \"city\": \"xxxxxx\",\n" +
-            "            \"countryCode\": \"xxxxxx\"\n" +
-            "        }\n" +
-            "    },\n" +
-            "    \"beneficiaries\": [\n" +
-            "        {\n" +
-            "            \"civility\": \"xxxx\",\n" +
-            "            \"firstname\": \"xxxxx\",\n" +
-            "            \"lastname\": \"xxxxx\",\n" +
-            "            \"maidenname\": \"xxxxxxx\",\n" +
-            "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"civility\": \"xxxx\",\n" +
-            "            \"firstname\": \"xxxxx\",\n" +
-            "            \"lastname\": \"xxxxx\",\n" +
-            "            \"maidenname\": \"xxxxxxx\",\n" +
-            "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"civility\": \"xxxx\",\n" +
-            "            \"firstname\": \"xxxxx\",\n" +
-            "            \"lastname\": \"xxxxx\",\n" +
-            "            \"maidenname\": \"xxxxxxx\",\n" +
-            "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"civility\": \"xxxx\",\n" +
-            "            \"firstname\": \"xxxxx\",\n" +
-            "            \"lastname\": \"xxxxx\",\n" +
-            "            \"maidenname\": \"xxxxxxx\",\n" +
-            "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"civility\": \"xxxx\",\n" +
-            "            \"firstname\": \"xxxxx\",\n" +
-            "            \"lastname\": \"xxxxx\",\n" +
-            "            \"maidenname\": \"xxxxxxx\",\n" +
-            "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"civility\": \"xxxx\",\n" +
-            "            \"firstname\": \"xxxxx\",\n" +
-            "            \"lastname\": \"xxxxx\",\n" +
-            "            \"maidenname\": \"xxxxxxx\",\n" +
-            "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-            "        }\n" +
-            "    ]\n" +
-            "}";
-
+    private static final String JSON =
+        "{\n" +
+        "    \"travel\": {\n" +
+        "        \"type\": \"TOURISM\",\n" +
+        "        \"language\": \"FR\",\n" +
+        "        \"isPolicyHolderTravelling\": true,\n" +
+        "        \"start\": \"2019-06-03\",\n" +
+        "        \"end\": \"2019-06-05\"\n" +
+        "    },\n" +
+        "    \"policyHolder\": {\n" +
+        "        \"civility\": \"xxxxxx\",\n" +
+        "        \"firstname\": \"xxxxxx\",\n" +
+        "        \"lastname\": \"xxxxxx\",\n" +
+        "        \"maidenname\": \"xxxxxx\",\n" +
+        "        \"id\": \"45465\",\n" +
+        "        \"phone\": \"0606060607\",\n" +
+        "        \"professionalPhone\": \"0101010101\",\n" +
+        "        \"email\": \"xxxxxxxxxxx\",\n" +
+        "        \"address\": {\n" +
+        "            \"street\": \"my street\",\n" +
+        "            \"zipcode\": \"xxxxxx\",\n" +
+        "            \"city\": \"xxxxxx\",\n" +
+        "            \"countryCode\": \"xxxxxx\"\n" +
+        "        }\n" +
+        "    },\n" +
+        "    \"beneficiaries\": [\n" +
+        "        {\n" +
+        "            \"civility\": \"xxxx\",\n" +
+        "            \"firstname\": \"xxxxx\",\n" +
+        "            \"lastname\": \"xxxxx\",\n" +
+        "            \"maidenname\": \"xxxxxxx\",\n" +
+        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
+        "        },\n" +
+        "        {\n" +
+        "            \"civility\": \"xxxx\",\n" +
+        "            \"firstname\": \"xxxxx\",\n" +
+        "            \"lastname\": \"xxxxx\",\n" +
+        "            \"maidenname\": \"xxxxxxx\",\n" +
+        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
+        "        },\n" +
+        "        {\n" +
+        "            \"civility\": \"xxxx\",\n" +
+        "            \"firstname\": \"xxxxx\",\n" +
+        "            \"lastname\": \"xxxxx\",\n" +
+        "            \"maidenname\": \"xxxxxxx\",\n" +
+        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
+        "        },\n" +
+        "        {\n" +
+        "            \"civility\": \"xxxx\",\n" +
+        "            \"firstname\": \"xxxxx\",\n" +
+        "            \"lastname\": \"xxxxx\",\n" +
+        "            \"maidenname\": \"xxxxxxx\",\n" +
+        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
+        "        },\n" +
+        "        {\n" +
+        "            \"civility\": \"xxxx\",\n" +
+        "            \"firstname\": \"xxxxx\",\n" +
+        "            \"lastname\": \"xxxxx\",\n" +
+        "            \"maidenname\": \"xxxxxxx\",\n" +
+        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
+        "        },\n" +
+        "        {\n" +
+        "            \"civility\": \"xxxx\",\n" +
+        "            \"firstname\": \"xxxxx\",\n" +
+        "            \"lastname\": \"xxxxx\",\n" +
+        "            \"maidenname\": \"xxxxxxx\",\n" +
+        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
+        "        }\n" +
+        "    ]\n" +
+        "}";
 
     JsonThreatProtectionPolicyConfiguration configuration;
 
@@ -132,7 +132,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Before
     public void before() {
-
         configuration = new JsonThreatProtectionPolicyConfiguration();
         configuration.setMaxArraySize(100);
         configuration.setMaxDepth(1000);
@@ -149,7 +148,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldAcceptAllWhenContentTypeIsNotJson() {
-
         Mockito.reset(request);
         when(request.headers()).thenReturn(new HttpHeaders());
         ReadWriteStream<?> readWriteStream = cut.onRequestContent(request, policyChain);
@@ -159,7 +157,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldAcceptValidJson() {
-
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
         assertNotNull(readWriteStream);
@@ -172,7 +169,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectInvalidJson() {
-
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
         assertNotNull(readWriteStream);
@@ -186,7 +182,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxNameLengthExceeded() {
-
         configuration.setMaxNameLength(4);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -201,7 +196,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxValueLengthExceeded() {
-
         configuration.setMaxValueLength(8);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -216,7 +210,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxObjectEntriesExceeded() {
-
         configuration.setMaxEntries(2);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -231,7 +224,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxArraySizeExceeded() {
-
         configuration.setMaxArraySize(2);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -246,7 +238,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxArrayOfObjectSizeExceeded() {
-
         configuration.setMaxArraySize(2);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -260,7 +251,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxArraySizeExceededInSubArray() {
-
         configuration.setMaxArraySize(4);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -275,7 +265,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldAcceptWhenMaxArraySizeDoesNotExceed() {
-
         configuration.setMaxArraySize(4);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -289,7 +278,6 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxDepthExceeded() {
-
         configuration.setMaxDepth(1);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
@@ -304,13 +292,14 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldRejectWhenMaxDepthInArraysExceeded() {
-
         configuration.setMaxDepth(6);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
         assertNotNull(readWriteStream);
 
-        readWriteStream.write(Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": [ [ [ [ [ \"123456789\" ] ] ] ] ] } }"));
+        readWriteStream.write(
+            Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": [ [ [ [ [ \"123456789\" ] ] ] ] ] } }")
+        );
         readWriteStream.end();
 
         verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
@@ -319,13 +308,14 @@ public class JsonThreatProtectionPolicyTest {
 
     @Test
     public void shouldAcceptWhenMaxDepthInArraysDoesNotExceed() {
-
         configuration.setMaxDepth(7);
         ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
         assertNotNull(readWriteStream);
 
-        readWriteStream.write(Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": [ [ [ [ [ \"123456789\" ] ] ] ] ] } }"));
+        readWriteStream.write(
+            Buffer.buffer("{ \"valid\": false, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": [ [ [ [ [ \"123456789\" ] ] ] ] ] } }")
+        );
         readWriteStream.end();
 
         verifyNoInteractions(policyChain);

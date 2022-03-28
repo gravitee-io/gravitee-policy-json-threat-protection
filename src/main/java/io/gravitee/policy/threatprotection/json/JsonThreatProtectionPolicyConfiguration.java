@@ -36,7 +36,7 @@ public class JsonThreatProtectionPolicyConfiguration implements PolicyConfigurat
     /**
      * Maximum depth of json structure. Null or negative value should be considered as infinite.
      */
-    private Integer maxDepth ;
+    private Integer maxDepth;
 
     /**
      * Maximum json field name length. Null or negative value should be considered as infinite.
