@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.3.1...1.3.2) (2022-03-28)
+
+
+### Bug Fixes
+
+* stop propagating request to backend if not valid ([d3dd683](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/d3dd683e016e44200e332c68829e1b5dc80f767a))
+
 ## [1.3.1](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.3.0...1.3.1) (2022-01-24)
 
 
