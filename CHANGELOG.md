@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.3.3...1.3.4) (2023-07-20)
+
+
+### Bug Fixes
+
+* update policy description ([d784717](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/d78471710e1a8412df2d013868b3396347caf482))
+
 ## [1.3.3](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.3.2...1.3.3) (2022-04-28)
 
 
