@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.3.4...1.4.0) (2023-12-19)
+
+
+### Features
+
+* enable policy on REQUEST phase for proxy and message APIs ([8b383dc](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/8b383dcbe32052b3d9ae6865ca5deabc58429649)), closes [gravitee-io/issues#9430](https://github.com/gravitee-io/issues/issues/9430)
+
 ## [1.3.4](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.3.3...1.3.4) (2023-07-20)
 
 
