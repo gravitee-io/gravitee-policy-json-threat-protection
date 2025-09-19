@@ -52,6 +52,7 @@ public class JsonThreatProtectionPolicy {
 
     public JsonThreatProtectionPolicy(JsonThreatProtectionPolicyConfiguration configuration) {
         this.configuration = configuration;
+        jsonFactory.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, configuration.isPreventDuplicateKey());
     }
 
     @OnRequestContent

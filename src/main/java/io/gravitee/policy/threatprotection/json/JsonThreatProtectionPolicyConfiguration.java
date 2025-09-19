@@ -48,6 +48,11 @@ public class JsonThreatProtectionPolicyConfiguration implements PolicyConfigurat
      */
     private Integer maxValueLength;
 
+    /**
+     * If false, accept duplicate key in JSON.
+     */
+    private boolean preventDuplicateKey = true;
+
     public boolean hasMaxEntries() {
         return maxEntries != null && maxEntries >= 0;
     }
@@ -106,5 +111,13 @@ public class JsonThreatProtectionPolicyConfiguration implements PolicyConfigurat
 
     public void setMaxValueLength(Integer maxValueLength) {
         this.maxValueLength = maxValueLength;
+    }
+
+    public boolean isPreventDuplicateKey() {
+        return preventDuplicateKey;
+    }
+
+    public void setPreventDuplicateKey(boolean preventDuplicateKey) {
+        this.preventDuplicateKey = preventDuplicateKey;
     }
 }
