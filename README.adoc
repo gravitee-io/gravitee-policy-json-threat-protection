@@ -59,6 +59,12 @@ When an invalid request is detected (meaning the limit is reached), the request 
 ^.^|integer (-1 to specify no limit)
 |500
 
+.^|preventDuplicateKey
+^.^|
+|Reject duplicate keys
+^.^|boolean
+|true
+
 |===
 
 == Errors

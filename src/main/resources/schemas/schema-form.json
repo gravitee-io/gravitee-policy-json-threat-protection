@@ -2,6 +2,12 @@
     "type": "object",
     "id": "urn:jsonschema:io:gravitee:policy:threatprotection:json:JsonThreatProtectionPolicyConfiguration",
     "properties": {
+        "maxEntries": {
+            "title": "Maximum json object entries",
+            "description": "Maximum number of entries allowed in an json object. Example: <code>{ \"a\":{ \"b\":1, \"c\":2, \"d\":3 }}</code>, \"a\" has 3 entries. (-1 to specify no limit)",
+            "type": "integer",
+            "default": 100
+        },
         "maxArraySize": {
             "title": "Maximum json array size",
             "description": "Maximum number of elements allowed in an array. (-1 to specify no limit)",
@@ -25,6 +31,12 @@
             "description": "Maximum string length allowed for a json property value. (-1 to specify no limit)",
             "type": "integer",
             "default": 500
+        },
+        "preventDuplicateKey": {
+            "title": "Prevent duplicate key",
+            "description": "If false, accept duplicate key",
+            "type": "boolean",
+            "default": true
         }
     },
     "required": ["maxEntries", "maxArraySize", "maxDepth", "maxNameLength", "maxValueLength"]

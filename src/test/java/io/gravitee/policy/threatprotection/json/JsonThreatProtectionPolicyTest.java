@@ -361,6 +361,43 @@ public class JsonThreatProtectionPolicyTest {
         verifyNoInteractions(policyChain);
     }
 
+    @Test
+    public void shouldRejectWhenDuplicateKey() {
+        ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
+
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
+
+        String e = "{\n" + "    \"travel\": {\n" + "        \"type\": \"TOURISM\"\n" + "    },\n" + "    \"travel\": 12,\n" + "}";
+
+        readWriteStream.write(Buffer.buffer(e));
+        readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isFalse();
+
+        verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
+        assertEquals(JSON_THREAT_DETECTED_KEY, resultCaptor.getValue().key());
+    }
+
+    @Test
+    public void shouldAcceptWhenDuplicateKey() {
+        configuration.setPreventDuplicateKey(false);
+        cut = new JsonThreatProtectionPolicy(configuration);
+        ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
+
+        assertThat(readWriteStream).isNotNull();
+        final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
+
+        String e = "{\n" + "    \"travel\": {\n" + "        \"type\": \"TOURISM\"\n" + "    },\n" + "    \"travel\": 12\n" + "}";
+
+        readWriteStream.write(Buffer.buffer(e));
+        readWriteStream.end();
+
+        assertThat(hasCalledEndOnReadWriteStreamParentClass).isTrue();
+
+        verifyNoInteractions(policyChain);
+    }
+
     /**
      * Replace the endHandler of the resulting ReadWriteStream of the policy execution.
      * This endHandler will set an {@link AtomicBoolean} to {@code true} if its called.
