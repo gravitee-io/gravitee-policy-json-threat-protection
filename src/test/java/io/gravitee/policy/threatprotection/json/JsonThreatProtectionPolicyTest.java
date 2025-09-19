@@ -1,11 +1,11 @@
-/**
- * Copyright (C) 2015 The Gravitee team (http://gravitee.io)
+/*
+ * Copyright © 2015 The Gravitee team (http://gravitee.io)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *         http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -61,75 +61,76 @@ public class JsonThreatProtectionPolicyTest {
     private ArgumentCaptor<PolicyResult> resultCaptor;
 
     private static final String JSON =
-        "{\n" +
-        "    \"travel\": {\n" +
-        "        \"type\": \"TOURISM\",\n" +
-        "        \"language\": \"FR\",\n" +
-        "        \"isPolicyHolderTravelling\": true,\n" +
-        "        \"start\": \"2019-06-03\",\n" +
-        "        \"end\": \"2019-06-05\"\n" +
-        "    },\n" +
-        "    \"policyHolder\": {\n" +
-        "        \"civility\": \"xxxxxx\",\n" +
-        "        \"firstname\": \"xxxxxx\",\n" +
-        "        \"lastname\": \"xxxxxx\",\n" +
-        "        \"maidenname\": \"xxxxxx\",\n" +
-        "        \"id\": \"45465\",\n" +
-        "        \"phone\": \"0606060607\",\n" +
-        "        \"professionalPhone\": \"0101010101\",\n" +
-        "        \"email\": \"xxxxxxxxxxx\",\n" +
-        "        \"address\": {\n" +
-        "            \"street\": \"my street\",\n" +
-        "            \"zipcode\": \"xxxxxx\",\n" +
-        "            \"city\": \"xxxxxx\",\n" +
-        "            \"countryCode\": \"xxxxxx\"\n" +
-        "        }\n" +
-        "    },\n" +
-        "    \"beneficiaries\": [\n" +
-        "        {\n" +
-        "            \"civility\": \"xxxx\",\n" +
-        "            \"firstname\": \"xxxxx\",\n" +
-        "            \"lastname\": \"xxxxx\",\n" +
-        "            \"maidenname\": \"xxxxxxx\",\n" +
-        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-        "        },\n" +
-        "        {\n" +
-        "            \"civility\": \"xxxx\",\n" +
-        "            \"firstname\": \"xxxxx\",\n" +
-        "            \"lastname\": \"xxxxx\",\n" +
-        "            \"maidenname\": \"xxxxxxx\",\n" +
-        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-        "        },\n" +
-        "        {\n" +
-        "            \"civility\": \"xxxx\",\n" +
-        "            \"firstname\": \"xxxxx\",\n" +
-        "            \"lastname\": \"xxxxx\",\n" +
-        "            \"maidenname\": \"xxxxxxx\",\n" +
-        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-        "        },\n" +
-        "        {\n" +
-        "            \"civility\": \"xxxx\",\n" +
-        "            \"firstname\": \"xxxxx\",\n" +
-        "            \"lastname\": \"xxxxx\",\n" +
-        "            \"maidenname\": \"xxxxxxx\",\n" +
-        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-        "        },\n" +
-        "        {\n" +
-        "            \"civility\": \"xxxx\",\n" +
-        "            \"firstname\": \"xxxxx\",\n" +
-        "            \"lastname\": \"xxxxx\",\n" +
-        "            \"maidenname\": \"xxxxxxx\",\n" +
-        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-        "        },\n" +
-        "        {\n" +
-        "            \"civility\": \"xxxx\",\n" +
-        "            \"firstname\": \"xxxxx\",\n" +
-        "            \"lastname\": \"xxxxx\",\n" +
-        "            \"maidenname\": \"xxxxxxx\",\n" +
-        "            \"relationtopolicyholder\": \"xxxxxxx\"\n" +
-        "        }\n" +
-        "    ]\n" +
-        "}";
+        """
+        {
+            "travel": {
+                "type": "TOURISM",
+                "language": "FR",
+                "isPolicyHolderTravelling": true,
+                "start": "2019-06-03",
+                "end": "2019-06-05"
+            },
+            "policyHolder": {
+                "civility": "xxxxxx",
+                "firstname": "xxxxxx",
+                "lastname": "xxxxxx",
+                "maidenname": "xxxxxx",
+                "id": "45465",
+                "phone": "0606060607",
+                "professionalPhone": "0101010101",
+                "email": "xxxxxxxxxxx",
+                "address": {
+                    "street": "my street",
+                    "zipcode": "xxxxxx",
+                    "city": "xxxxxx",
+                    "countryCode": "xxxxxx"
+                }
+            },
+            "beneficiaries": [
+                {
+                    "civility": "xxxx",
+                    "firstname": "xxxxx",
+                    "lastname": "xxxxx",
+                    "maidenname": "xxxxxxx",
+                    "relationtopolicyholder": "xxxxxxx"
+                },
+                {
+                    "civility": "xxxx",
+                    "firstname": "xxxxx",
+                    "lastname": "xxxxx",
+                    "maidenname": "xxxxxxx",
+                    "relationtopolicyholder": "xxxxxxx"
+                },
+                {
+                    "civility": "xxxx",
+                    "firstname": "xxxxx",
+                    "lastname": "xxxxx",
+                    "maidenname": "xxxxxxx",
+                    "relationtopolicyholder": "xxxxxxx"
+                },
+                {
+                    "civility": "xxxx",
+                    "firstname": "xxxxx",
+                    "lastname": "xxxxx",
+                    "maidenname": "xxxxxxx",
+                    "relationtopolicyholder": "xxxxxxx"
+                },
+                {
+                    "civility": "xxxx",
+                    "firstname": "xxxxx",
+                    "lastname": "xxxxx",
+                    "maidenname": "xxxxxxx",
+                    "relationtopolicyholder": "xxxxxxx"
+                },
+                {
+                    "civility": "xxxx",
+                    "firstname": "xxxxx",
+                    "lastname": "xxxxx",
+                    "maidenname": "xxxxxxx",
+                    "relationtopolicyholder": "xxxxxxx"
+                }
+            ]
+        }""";
 
     JsonThreatProtectionPolicyConfiguration configuration;
 
@@ -168,7 +169,7 @@ public class JsonThreatProtectionPolicyTest {
         readWriteStream.write(Buffer.buffer("{ \"valid\": true, \"array\": [ 1, 2, 3 ], \"container\": { \"a\": true } }"));
         readWriteStream.end();
 
-        verifyZeroInteractions(policyChain);
+        verifyNoInteractions(policyChain);
     }
 
     @Test
