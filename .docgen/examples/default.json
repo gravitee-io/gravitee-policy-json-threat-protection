@@ -1,0 +1,8 @@
+{
+    "maxEntries": 100,
+    "maxArraySize": 100,
+    "maxDepth": 100,
+    "maxNameLength": 100,
+    "maxValueLength": 500,
+    "preventDuplicateKey": true
+}
