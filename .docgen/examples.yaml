@@ -1,0 +1,8 @@
+genExamples: []
+rawExamples:
+    - title: Default configuration
+      templateRef: v4-api-proxy
+      language: json
+      properties:
+          phase: response
+      file: .docgen/examples/default.json

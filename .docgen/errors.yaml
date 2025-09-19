@@ -1,0 +1,13 @@
+rows:
+    - data:
+          key: JSON_THREAT_DETECTED
+    - data:
+          key: JSON_THREAT_MAX_DEPTH
+    - data:
+          key: JSON_THREAT_MAX_ENTRIES
+    - data:
+          key: JSON_THREAT_MAX_NAME_LENGTH
+    - data:
+          key: JSON_THREAT_MAX_VALUE_LENGTH
+    - data:
+          key: JSON_MAX_ARRAY_SIZE
