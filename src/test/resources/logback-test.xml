@@ -10,7 +10,10 @@
 	</appender>
 
 	<!-- only gravitee Logs in debug -->
-	<logger name="io.gravitee" level="debug" additivity="false">
+	<logger name="io.gravitee.policy.threatprotection" level="debug" additivity="false">
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	<logger name="io.gravitee" level="info" additivity="false">
 		<appender-ref ref="CONSOLE" />
 	</logger>
 
