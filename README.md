@@ -13,6 +13,21 @@ When an invalid request is detected (meaning the limit is reached), the request 
 
 
 
+## Errors
+These templates are defined at the API level, in the "Entrypoint" section for v4 APIs, or in "Response Templates" for v2 APIs.
+The error keys sent by this policy are as follows:
+
+| Key |
+| ---  |
+| JSON_THREAT_DETECTED |
+| JSON_THREAT_MAX_DEPTH |
+| JSON_THREAT_MAX_ENTRIES |
+| JSON_THREAT_MAX_NAME_LENGTH |
+| JSON_THREAT_MAX_VALUE_LENGTH |
+| JSON_MAX_ARRAY_SIZE |
+
+
+
 ## Phases
 The `json-threat-protection` policy can be applied to the following API types and flow phases.
 
@@ -30,7 +45,8 @@ Strikethrough text indicates that a version is deprecated.
 
 | Plugin version| APIM| Java version |
 | --- | --- | ---  |
-|1.0.0 and after|4.3.x and after|8 |
+|1.x|3.x|8 |
+|2.x|4.x|17 |
 
 
 ## Configuration options
@@ -41,7 +57,6 @@ Strikethrough text indicates that a version is deprecated.
 |:----------------------|:-----------------------|:----------:|:---------|:-------------|
 | Maximum json array size<br>`maxArraySize`| integer| ✅| `100`| Maximum number of elements allowed in an array. (-1 to specify no limit)|
 | Maximum json depth<br>`maxDepth`| integer| ✅| `100`| Maximum depth of json structure. Example: <code>{ "a":{ "b":{ "c":true }}}</code>, json has a depth of 3. (-1 to specify no limit)|
-| Maximum json object entries<br>`maxEntries`| integer| ✅| `100`| Maximum number of entries allowed in an json object. Example: <code>{ "a":{ "b":1, "c":2, "d":3 }}</code>, "a" has 3 entries. (-1 to specify no limit)|
 | Maximum json field name length<br>`maxNameLength`| integer| ✅| `100`| Maximum string length allowed for a json property name. (-1 to specify no limit)|
 | Maximum json field value length<br>`maxValueLength`| integer| ✅| `500`| Maximum string length allowed for a json property value. (-1 to specify no limit)|
 | Prevent duplicate key<br>`preventDuplicateKey`| boolean|  | `true`| If false, accept duplicate key|
