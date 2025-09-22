@@ -1,0 +1,47 @@
+{
+    "id": "my-api",
+    "name": "my-api",
+    "gravitee": "2.0.0",
+    "execution_mode": "v3",
+    "proxy": {
+        "context_path": "/mock",
+        "endpoints": [
+            {
+                "name": "default",
+                "target": "http://localhost:8080/mock",
+                "http": {
+                    "connectTimeout": 3000,
+                    "readTimeout": 60000
+                }
+            }
+        ]
+    },
+    "flows": [
+        {
+            "name": "flow-1",
+            "methods": ["POST"],
+            "enabled": true,
+            "path-operator": {
+                "path": "/",
+                "operator": "STARTS_WITH"
+            },
+            "pre": [
+                {
+                    "name": "JSON Threat Protection",
+                    "description": "JSON Threat Protection",
+                    "enabled": true,
+                    "policy": "json-threat-protection",
+                    "configuration": {
+                        "maxEntries": 5,
+                        "maxArraySize": 5,
+                        "maxDepth": 5,
+                        "maxNameLength": 5,
+                        "maxValueLength": 5,
+                        "preventDuplicateKey": false
+                    }
+                }
+            ],
+            "post": []
+        }
+    ]
+}

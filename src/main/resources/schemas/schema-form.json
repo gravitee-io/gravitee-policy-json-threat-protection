@@ -30,7 +30,7 @@
             "title": "Maximum json field value length",
             "description": "Maximum string length allowed for a json property value. (-1 to specify no limit)",
             "type": "integer",
-            "default": 500
+            "default": 100
         },
         "preventDuplicateKey": {
             "title": "Prevent duplicate key",

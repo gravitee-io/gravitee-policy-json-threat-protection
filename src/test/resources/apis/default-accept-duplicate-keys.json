@@ -1,0 +1,73 @@
+{
+    "id": "mock-api-1",
+    "name": "mock-api-1",
+    "apiVersion": "1.0",
+    "definitionVersion": "4.0.0",
+    "type": "proxy",
+    "analytics": {},
+    "description": "",
+    "listeners": [
+        {
+            "type": "http",
+            "paths": [
+                {
+                    "path": "/mock"
+                }
+            ],
+            "entrypoints": [
+                {
+                    "type": "http-proxy"
+                }
+            ]
+        }
+    ],
+    "endpointGroups": [
+        {
+            "name": "default",
+            "type": "http-proxy",
+            "endpoints": [
+                {
+                    "name": "default",
+                    "type": "http-proxy",
+                    "weight": 1,
+                    "inheritConfiguration": false,
+                    "configuration": {
+                        "target": "http://localhost:8080/mock"
+                    }
+                }
+            ]
+        }
+    ],
+    "flows": [
+        {
+            "name": "json-threat-protection-flow",
+            "enabled": true,
+            "selectors": [
+                {
+                    "type": "http",
+                    "path": "/",
+                    "pathOperator": "STARTS_WITH"
+                }
+            ],
+            "request": [
+                {
+                    "name": "JSON Threat Protection",
+                    "description": "JSON Threat Protection",
+                    "enabled": true,
+                    "policy": "json-threat-protection",
+                    "configuration": {
+                        "maxEntries": 5,
+                        "maxArraySize": 5,
+                        "maxDepth": 5,
+                        "maxNameLength": 5,
+                        "maxValueLength": 5,
+                        "preventDuplicateKey": false
+                    }
+                }
+            ],
+            "response": [],
+            "subscribe": [],
+            "publish": []
+        }
+    ]
+}
