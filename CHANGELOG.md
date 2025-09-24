@@ -1,3 +1,26 @@
+# [2.0.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.4.0...2.0.0) (2025-09-24)
+
+
+### Bug Fixes
+
+* lint ([a7bd8eb](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/a7bd8ebb3ec8aef32e6638cd742094733bccfb56))
+
+
+### chore
+
+* bump versions ([719ed8f](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/719ed8f5216d588236f3fdae1103921a2fff9a46))
+
+
+### Features
+
+* add setup to allow duplicate key ([56a6a0b](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/56a6a0bc2ff11adb49e995789090ac4b19eaf7dc))
+* create integration tests ([5406abd](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/5406abde09d0a2e57de29ec95b95ecf441750199))
+
+
+### BREAKING CHANGES
+
+* requier java 17
+
 # [1.4.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.3.4...1.4.0) (2023-12-19)
 
 
