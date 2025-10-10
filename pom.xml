@@ -34,7 +34,7 @@
     </parent>
 
     <properties>
-        <gravitee-apim.version>4.6.20</gravitee-apim.version>
+        <gravitee-apim.version>4.8.9</gravitee-apim.version>
         <publish-folder-path>graviteeio-apim/plugins/policies</publish-folder-path>
     </properties>
 
