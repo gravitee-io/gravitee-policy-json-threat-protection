@@ -30,7 +30,7 @@ import io.gravitee.policy.api.PolicyChain;
 import io.gravitee.policy.api.PolicyResult;
 import io.gravitee.policy.api.annotations.OnRequestContent;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Jeoffrey HAEYAERT (jeoffrey.haeyaert at graviteesource.com)
@@ -45,10 +45,11 @@ public class JsonThreatProtectionPolicy {
     public static final String JSON_THREAT_MAX_NAME_LENGTH_KEY = "JSON_THREAT_MAX_NAME_LENGTH";
     public static final String JSON_THREAT_MAX_VALUE_LENGTH_KEY = "JSON_THREAT_MAX_VALUE_LENGTH";
     public static final String JSON_MAX_ARRAY_SIZE_KEY = "JSON_MAX_ARRAY_SIZE";
+    public static final String JSON_THREAT_ENFORCE_JSON = "JSON_THREAT_ENFORCE_JSON";
 
     private static final JsonFactory jsonFactory = new JsonFactory();
 
-    private JsonThreatProtectionPolicyConfiguration configuration;
+    private final JsonThreatProtectionPolicyConfiguration configuration;
 
     public JsonThreatProtectionPolicy(JsonThreatProtectionPolicyConfiguration configuration) {
         this.configuration = configuration;
@@ -57,7 +58,7 @@ public class JsonThreatProtectionPolicy {
 
     @OnRequestContent
     public ReadWriteStream<Buffer> onRequestContent(Request request, PolicyChain policyChain) {
-        if (request.headers().getOrDefault(HttpHeaders.CONTENT_TYPE, Collections.emptyList()).contains(MediaType.APPLICATION_JSON)) {
+        if (request.headers().getOrDefault(HttpHeaders.CONTENT_TYPE, List.of()).contains(MediaType.APPLICATION_JSON)) {
             // The policy is only applicable to json content type.
             return new BufferedReadWriteStream() {
                 final Buffer buffer = Buffer.buffer();
@@ -93,6 +94,15 @@ public class JsonThreatProtectionPolicy {
                     }
                 }
             };
+        } else if (configuration.isEnforceJson()) {
+            policyChain.streamFailWith(
+                PolicyResult.failure(
+                    JSON_THREAT_ENFORCE_JSON,
+                    HttpStatusCode.UNSUPPORTED_MEDIA_TYPE_415,
+                    "Unsupported Media Type",
+                    MediaType.TEXT_PLAIN
+                )
+            );
         }
 
         return null;
