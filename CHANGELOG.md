@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/2.0.0...2.1.0) (2025-10-14)
+
+
+### Features
+
+* add new param to reject not JSON ([9c97531](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/9c975316df9c04e0fd64e488aed9e448660cfe1c))
+
 # [2.0.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.4.0...2.0.0) (2025-09-24)
 
 
