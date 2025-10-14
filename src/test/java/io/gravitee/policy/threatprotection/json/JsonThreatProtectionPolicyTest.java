@@ -19,6 +19,7 @@ import static io.gravitee.policy.threatprotection.json.JsonThreatProtectionPolic
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+import io.gravitee.common.http.HttpStatusCode;
 import io.gravitee.common.http.MediaType;
 import io.gravitee.gateway.api.Request;
 import io.gravitee.gateway.api.Response;
@@ -423,6 +424,21 @@ public class JsonThreatProtectionPolicyTest {
 
             verifyNoInteractions(policyChain);
         }
+    }
+
+    @Test
+    public void should_reject_xml_when_enforce_json() {
+        configuration.setEnforceJson(true);
+
+        HttpHeaders httpHeaders = HttpHeaders.create().set(HttpHeaderNames.CONTENT_TYPE, MediaType.APPLICATION_XML);
+        when(request.headers()).thenReturn(httpHeaders);
+        ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
+
+        assertThat(readWriteStream).isNull();
+
+        verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
+        assertThat(resultCaptor.getValue().key()).isEqualTo(JSON_THREAT_ENFORCE_JSON);
+        assertThat(resultCaptor.getValue().statusCode()).isEqualTo(415);
     }
 
     /**

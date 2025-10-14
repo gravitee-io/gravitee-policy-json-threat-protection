@@ -53,6 +53,11 @@ public class JsonThreatProtectionPolicyConfiguration implements PolicyConfigurat
      */
     private boolean preventDuplicateKey = true;
 
+    /**
+     * When activated, only JSON content is accepted.
+     */
+    private boolean enforceJson = false; // for compatibility
+
     public boolean hasMaxEntries() {
         return maxEntries != null && maxEntries >= 0;
     }
@@ -119,5 +124,13 @@ public class JsonThreatProtectionPolicyConfiguration implements PolicyConfigurat
 
     public void setPreventDuplicateKey(boolean preventDuplicateKey) {
         this.preventDuplicateKey = preventDuplicateKey;
+    }
+
+    public boolean isEnforceJson() {
+        return enforceJson;
+    }
+
+    public void setEnforceJson(boolean enforceJson) {
+        this.enforceJson = enforceJson;
     }
 }
