@@ -47,7 +47,7 @@ public class JsonThreatProtectionPolicy {
     public static final String JSON_MAX_ARRAY_SIZE_KEY = "JSON_MAX_ARRAY_SIZE";
     public static final String JSON_THREAT_ENFORCE_JSON = "JSON_THREAT_ENFORCE_JSON";
 
-    private static final JsonFactory jsonFactory = new JsonFactory();
+    private final JsonFactory jsonFactory = new JsonFactory();
 
     private final JsonThreatProtectionPolicyConfiguration configuration;
 
