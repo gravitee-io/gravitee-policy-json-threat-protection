@@ -373,6 +373,60 @@ public class JsonThreatProtectionPolicyTest {
     class DuplicateKeyBehavior {
 
         @Test
+        public void should_enforce_duplicate_key_setting_independently_per_policy_instance() {
+            // Reproduces the static-jsonFactory race condition:
+            // A policy that prevents duplicate keys must still reject them after a second policy
+            // instance (configured to allow duplicates) has been constructed and used.
+            JsonThreatProtectionPolicyConfiguration allowDuplicatesConfig = new JsonThreatProtectionPolicyConfiguration();
+            allowDuplicatesConfig.setMaxArraySize(100);
+            allowDuplicatesConfig.setMaxDepth(1000);
+            allowDuplicatesConfig.setMaxEntries(100);
+            allowDuplicatesConfig.setMaxNameLength(100);
+            allowDuplicatesConfig.setMaxValueLength(100);
+            allowDuplicatesConfig.setPreventDuplicateKey(false);
+
+            // Instantiating this second policy mutates the shared static jsonFactory,
+            // disabling STRICT_DUPLICATE_DETECTION for every policy instance.
+            JsonThreatProtectionPolicy allowDuplicatesPolicy = new JsonThreatProtectionPolicy(allowDuplicatesConfig);
+            PolicyChain allowDuplicatesPolicyChain = mock(PolicyChain.class);
+            Request allowDuplicatesRequest = mock(Request.class);
+            when(allowDuplicatesRequest.headers())
+                .thenReturn(HttpHeaders.create().set(HttpHeaderNames.CONTENT_TYPE, MediaType.APPLICATION_JSON));
+
+            String jsonWithDuplicateKey =
+                """
+                {
+                    "travel": {
+                        "type": "TOURISM"
+                    },
+                    "travel": 12
+                }
+                """;
+
+            // Consume the allow-duplicates policy first (mirrors the /allow endpoint call in the reported scenario).
+            ReadWriteStream<Buffer> allowStream = allowDuplicatesPolicy.onRequestContent(
+                allowDuplicatesRequest,
+                allowDuplicatesPolicyChain
+            );
+            allowStream.endHandler(__ -> {});
+            allowStream.write(Buffer.buffer(jsonWithDuplicateKey));
+            allowStream.end();
+            verifyNoInteractions(allowDuplicatesPolicyChain);
+
+            // Now exercise the deny-duplicates policy (cut); it must still reject the same payload.
+            ReadWriteStream<Buffer> denyStream = cut.onRequestContent(request, policyChain);
+            assertThat(denyStream).isNotNull();
+            final AtomicBoolean endCalled = spyEndHandler(denyStream);
+
+            denyStream.write(Buffer.buffer(jsonWithDuplicateKey));
+            denyStream.end();
+
+            assertThat(endCalled).isFalse();
+            verify(policyChain, times(1)).streamFailWith(resultCaptor.capture());
+            assertThat(resultCaptor.getValue().key()).isEqualTo(JSON_THREAT_DETECTED_KEY);
+        }
+
+        @Test
         public void should_reject_when_duplicate_key() {
             ReadWriteStream<Buffer> readWriteStream = cut.onRequestContent(request, policyChain);
 
