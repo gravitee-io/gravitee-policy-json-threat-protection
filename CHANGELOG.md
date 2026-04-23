@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/2.1.0...2.1.1) (2026-04-23)
+
+
+### Bug Fixes
+
+* make jsonFactory instance-scoped to prevent duplicate-key setting race condition ([#39](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/issues/39)) ([dcec1e2](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/dcec1e28473023cc36a21161a835ed15534a36a0))
+
 # [2.1.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/2.0.0...2.1.0) (2025-10-14)
 
 
