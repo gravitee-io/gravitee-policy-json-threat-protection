@@ -48,11 +48,14 @@ public class AbstractJsonThreatProtectionPolicyIntegrationTest
 
     protected void stubBackend(WireMockServer wiremock) {
         wiremock.stubFor(
-            WireMock
-                .post("/mock")
-                .willReturn(WireMock.jsonResponse("""
-                {"message": "Response from mock"}
-                """, 200))
+            WireMock.post("/mock").willReturn(
+                WireMock.jsonResponse(
+                    """
+                    {"message": "Response from mock"}
+                    """,
+                    200
+                )
+            )
         );
     }
 

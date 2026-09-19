@@ -41,11 +41,14 @@ public class JsonThreatProtectionPolicyIntegrationTest {
         void should_accept_valid(HttpClient client, VertxTestContext context) {
             stubBackend(wiremock);
 
-            var clientAsserts = send(client, """
-            {
-            "f": "a"
-            }
-            """);
+            var clientAsserts = send(
+                client,
+                """
+                {
+                "f": "a"
+                }
+                """
+            );
 
             finalSuccessAssert(context, clientAsserts);
         }
@@ -54,12 +57,15 @@ public class JsonThreatProtectionPolicyIntegrationTest {
         void should_reject_duplicate_keys(HttpClient client, VertxTestContext context) {
             stubBackend(wiremock);
 
-            var clientAsserts = send(client, """
-            {
-            "f": "a",
-            "f": 12
-            }
-            """);
+            var clientAsserts = send(
+                client,
+                """
+                {
+                "f": "a",
+                "f": 12
+                }
+                """
+            );
 
             rejectedAssert(context, clientAsserts);
         }
@@ -68,11 +74,14 @@ public class JsonThreatProtectionPolicyIntegrationTest {
         void should_reject_too_big_key(HttpClient client, VertxTestContext context) {
             stubBackend(wiremock);
 
-            var clientAsserts = send(client, """
-            {
-            "foofoo": "a"
-            }
-            """);
+            var clientAsserts = send(
+                client,
+                """
+                {
+                "foofoo": "a"
+                }
+                """
+            );
 
             rejectedAssert(context, clientAsserts);
         }
@@ -81,11 +90,14 @@ public class JsonThreatProtectionPolicyIntegrationTest {
         void should_reject_too_big_value(HttpClient client, VertxTestContext context) {
             stubBackend(wiremock);
 
-            var clientAsserts = send(client, """
-            {
-            "f": "abcdefg"
-            }
-            """);
+            var clientAsserts = send(
+                client,
+                """
+                {
+                "f": "abcdefg"
+                }
+                """
+            );
 
             rejectedAssert(context, clientAsserts);
         }
@@ -94,11 +106,14 @@ public class JsonThreatProtectionPolicyIntegrationTest {
         void should_reject_too_big_array(HttpClient client, VertxTestContext context) {
             stubBackend(wiremock);
 
-            var clientAsserts = send(client, """
-            {
-            "f": [1,2,3,4,5,6,7]
-            }
-            """);
+            var clientAsserts = send(
+                client,
+                """
+                {
+                "f": [1,2,3,4,5,6,7]
+                }
+                """
+            );
 
             rejectedAssert(context, clientAsserts);
         }
@@ -110,15 +125,15 @@ public class JsonThreatProtectionPolicyIntegrationTest {
             var clientAsserts = send(
                 client,
                 """
-            {
-            "f1": "a",
-            "f2": "a",
-            "f3": "a",
-            "f4": "a",
-            "f5": "a",
-            "f6": "a"
-            }
-            """
+                {
+                "f1": "a",
+                "f2": "a",
+                "f3": "a",
+                "f4": "a",
+                "f5": "a",
+                "f6": "a"
+                }
+                """
             );
 
             rejectedAssert(context, clientAsserts);
@@ -128,9 +143,12 @@ public class JsonThreatProtectionPolicyIntegrationTest {
         void should_reject_too_deep(HttpClient client, VertxTestContext context) {
             stubBackend(wiremock);
 
-            var clientAsserts = send(client, """
-            {"f1": {"f2": {"f3": {"f4": {"f5": {"f6": 1}}}}}}
-            """);
+            var clientAsserts = send(
+                client,
+                """
+                {"f1": {"f2": {"f3": {"f4": {"f5": {"f6": 1}}}}}}
+                """
+            );
 
             rejectedAssert(context, clientAsserts);
         }
@@ -145,12 +163,15 @@ public class JsonThreatProtectionPolicyIntegrationTest {
         void should_accept_duplicate_keys(HttpClient client, VertxTestContext context) {
             stubBackend(wiremock);
 
-            var clientAsserts = send(client, """
-            {
-            "f": "a",
-            "f": 12
-            }
-            """);
+            var clientAsserts = send(
+                client,
+                """
+                {
+                "f": "a",
+                "f": 12
+                }
+                """
+            );
 
             finalSuccessAssert(context, clientAsserts);
         }
