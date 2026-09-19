@@ -60,8 +60,7 @@ public class JsonThreatProtectionPolicyTest {
     @Captor
     private ArgumentCaptor<PolicyResult> resultCaptor;
 
-    private static final String JSON =
-        """
+    private static final String JSON = """
         {
             "travel": {
                 "type": "TOURISM",
@@ -390,11 +389,11 @@ public class JsonThreatProtectionPolicyTest {
             JsonThreatProtectionPolicy allowDuplicatesPolicy = new JsonThreatProtectionPolicy(allowDuplicatesConfig);
             PolicyChain allowDuplicatesPolicyChain = mock(PolicyChain.class);
             Request allowDuplicatesRequest = mock(Request.class);
-            when(allowDuplicatesRequest.headers())
-                .thenReturn(HttpHeaders.create().set(HttpHeaderNames.CONTENT_TYPE, MediaType.APPLICATION_JSON));
+            when(allowDuplicatesRequest.headers()).thenReturn(
+                HttpHeaders.create().set(HttpHeaderNames.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+            );
 
-            String jsonWithDuplicateKey =
-                """
+            String jsonWithDuplicateKey = """
                 {
                     "travel": {
                         "type": "TOURISM"
@@ -433,8 +432,7 @@ public class JsonThreatProtectionPolicyTest {
             assertThat(readWriteStream).isNotNull();
             final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
-            String e =
-                """
+            String e = """
                 {
                     "travel": {
                         "type": "TOURISM"
@@ -461,8 +459,7 @@ public class JsonThreatProtectionPolicyTest {
             assertThat(readWriteStream).isNotNull();
             final AtomicBoolean hasCalledEndOnReadWriteStreamParentClass = spyEndHandler(readWriteStream);
 
-            String e =
-                """
+            String e = """
                 {
                     "travel": {
                         "type": "TOURISM"
