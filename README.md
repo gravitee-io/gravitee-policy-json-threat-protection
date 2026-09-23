@@ -56,10 +56,12 @@ Strikethrough text indicates that a version is deprecated.
 #### 
 | Name <br>`json name`  | Type <br>`constraint`  | Mandatory  | Default  | Description  |
 |:----------------------|:-----------------------|:----------:|:---------|:-------------|
+| Enforce JSON payload<br>`enforceJson`| boolean|  | `true`| When it’s activated, only JSON content is accepted|
 | Maximum json array size<br>`maxArraySize`| integer| ✅| `100`| Maximum number of elements allowed in an array. (-1 to specify no limit)|
 | Maximum json depth<br>`maxDepth`| integer| ✅| `100`| Maximum depth of json structure. Example: <code>{ "a":{ "b":{ "c":true }}}</code>, json has a depth of 3. (-1 to specify no limit)|
+| Maximum json object entries<br>`maxEntries`| integer| ✅| `100`| Maximum number of entries allowed in an json object. Example: <code>{ "a":{ "b":1, "c":2, "d":3 }}</code>, "a" has 3 entries. (-1 to specify no limit)|
 | Maximum json field name length<br>`maxNameLength`| integer| ✅| `100`| Maximum string length allowed for a json property name. (-1 to specify no limit)|
-| Maximum json field value length<br>`maxValueLength`| integer| ✅| `500`| Maximum string length allowed for a json property value. (-1 to specify no limit)|
+| Maximum json field value length<br>`maxValueLength`| integer| ✅| `100`| Maximum string length allowed for a json property value. (-1 to specify no limit)|
 | Prevent duplicate key<br>`preventDuplicateKey`| boolean|  | `true`| If false, accept duplicate key|
 
 
@@ -110,6 +112,43 @@ Strikethrough text indicates that a version is deprecated.
 
 
 ## Changelog
+
+#### [2.1.1](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/2.1.0...2.1.1) (2026-04-23)
+
+
+##### Bug Fixes
+
+* make jsonFactory instance-scoped to prevent duplicate-key setting race condition ([#39](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/issues/39)) ([dcec1e2](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/dcec1e28473023cc36a21161a835ed15534a36a0))
+
+### [2.1.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/2.0.0...2.1.0) (2025-10-14)
+
+
+##### Features
+
+* add new param to reject not JSON ([9c97531](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/9c975316df9c04e0fd64e488aed9e448660cfe1c))
+
+### [2.0.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.4.0...2.0.0) (2025-09-24)
+
+
+##### Bug Fixes
+
+* lint ([a7bd8eb](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/a7bd8ebb3ec8aef32e6638cd742094733bccfb56))
+
+
+##### chore
+
+* bump versions ([719ed8f](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/719ed8f5216d588236f3fdae1103921a2fff9a46))
+
+
+##### Features
+
+* add setup to allow duplicate key ([56a6a0b](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/56a6a0bc2ff11adb49e995789090ac4b19eaf7dc))
+* create integration tests ([5406abd](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/5406abde09d0a2e57de29ec95b95ecf441750199))
+
+
+##### BREAKING CHANGES
+
+* requier java 17
 
 ### [1.4.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/1.3.4...1.4.0) (2023-12-19)
 
