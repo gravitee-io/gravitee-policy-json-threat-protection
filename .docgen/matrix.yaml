@@ -1,9 +1,13 @@
 rows:
     - data:
-          plugin: "1.x"
-          apim: "3.x"
-          java: 8
+          plugin: "3.x"
+          apim: "4.7.x to latest"
+          java: 21
     - data:
           plugin: "2.x"
           apim: "4.x"
           java: 17
+    - data:
+          plugin: "1.x"
+          apim: "3.x"
+          java: 8
