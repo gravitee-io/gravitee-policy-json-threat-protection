@@ -1,3 +1,16 @@
+# [3.0.0](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/2.1.1...3.0.0) (2026-09-24)
+
+
+* chore(deps)!: move to the gravitee orb 5 and parent 23 ([23dd040](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/commit/23dd040fd03f2caeb894e096ec7528f27a3a1f57))
+
+
+### BREAKING CHANGES
+
+* the artifact is now compiled for Java 21, up from Java 17, and
+requires a Java 21 runtime or later.
+
+https://gravitee.atlassian.net/browse/BX-403
+
 ## [2.1.1](https://github.com/gravitee-io/gravitee-policy-json-threat-protection/compare/2.1.0...2.1.1) (2026-04-23)
 
 
